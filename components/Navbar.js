@@ -15,7 +15,7 @@ const Navbar = () => {
   const categories = ["Electronics", "Clothing", "Home & Kitchen"];
 
   return (
-    <nav className=" shadow-sm  ">
+    <nav className=" bg-opacity-70 backdrop-blur  mb-9 top-0  sticky z-50 ">
       <div className="max-w-7xl mx-auto px-4">
         {/* Main Navbar */}
         <div className="flex items-center justify-between h-16">
