@@ -7,15 +7,19 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
-  const[popularProd, setPopularProd] = useState([])
+  const [popularProd, setPopularProd] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products/categories");
+        const response = await fetch(
+          "https://fakestoreapi.com/products/categories"
+        );
         const data = await response.json();
         setCategories(data);
         console.log("Fetched categories:", data);
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -30,8 +34,16 @@ export default function Home() {
       }
     };
     fetchCategories();
-    fetchPopularProducts()
+    fetchPopularProducts();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-pulse text-slate-700">Loading products...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -43,10 +55,17 @@ export default function Home() {
       </div>
 
       {/* Popular Products */}
-      <h2 className="text-2xl font-bold text-center mb-8 mt-9">Popular Products</h2>
+      <h2 className="text-2xl font-bold text-center mb-8 mt-9">
+        Popular Products
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {popularProd.map((product) => (
-          <PopularProd key={product.id} title={product.title} image={product.image} price={product.price} />
+          <PopularProd
+            key={product.id}
+            title={product.title}
+            image={product.image}
+            price={product.price}
+          />
         ))}
       </div>
     </div>

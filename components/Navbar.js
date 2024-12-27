@@ -12,7 +12,7 @@ import { ModeToggle } from './theme-btn';
 
 const Navbar = () => {
   const cartItemsCount = 2; 
-  const categories = ["Electronics", "Clothing", "Home & Kitchen"];
+  const categories = [""];
 
   return (
     <nav className=" bg-opacity-70 backdrop-blur  mb-9 top-0  sticky z-50 ">
@@ -22,7 +22,7 @@ const Navbar = () => {
           {/* Left - Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <ShoppingCart className="h-6 w-6 text-white" />
+              <ShoppingCart className="h-6 w-6 " />
               <span className="text-xl font-bold">Bazaaro</span>
             </Link>
           </div>
