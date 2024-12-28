@@ -2,13 +2,14 @@
 
 import Category from "@/components/Category";
 import PopularProd from "@/components/PopularProd";
-// import PopularProducts from "@/components/PopularProducts";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [popularProd, setPopularProd] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [limit, setLimit] = useState(8);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -19,14 +20,16 @@ export default function Home() {
         const data = await response.json();
         setCategories(data);
         console.log("Fetched categories:", data);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
-    const fetchPopularProducts = async () => {
+    const fetchPopularProducts = async (newLimit) => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
+        const response = await fetch(
+          `https://fakestoreapi.com/products?limit=${limit}`
+        );
         const data = await response.json();
         setPopularProd(data);
       } catch (error) {
@@ -36,6 +39,43 @@ export default function Home() {
     fetchCategories();
     fetchPopularProducts();
   }, []);
+  const handleNextPage = async () => {
+    console.log("btn");
+
+    // Update the limit first
+    setLimit((prevLimit) => {
+      const newLimit = prevLimit + 8;
+      // Now fetch the data with the updated limit
+      fetchPopularProducts(newLimit);
+      return newLimit; // Update the state
+    });
+  };
+
+  const fetchPopularProducts = async (newLimit) => {
+    try {
+      const response = await fetch(
+        `https://fakestoreapi.com/products?limit=${newLimit}`
+      );
+      const data = await response.json();
+      setPopularProd(data); // Update your products with the new data
+    } catch (error) {
+      console.error("Error fetching popular products:", error);
+    }
+  };
+
+  const handlePrevPage = async () => {
+    console.log("btn");
+    setLimit(limit - 8);
+    try {
+      const response = await fetch(
+        `https://fakestoreapi.com/products?limit=${limit}`
+      );
+      const data = await response.json();
+      setPopularProd(data);
+    } catch (error) {
+      console.error("Error fetching popular products:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -67,6 +107,12 @@ export default function Home() {
             price={product.price}
           />
         ))}
+      </div>
+      <div className="justify-between flex mt-4">
+        <Button disabled={limit === 8} onClick={handlePrevPage}>
+          Show less
+        </Button>
+        <Button onClick={handleNextPage}>Show More</Button>
       </div>
     </div>
   );

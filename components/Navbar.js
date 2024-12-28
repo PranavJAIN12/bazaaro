@@ -48,12 +48,15 @@ const Navbar = () => {
           {/* Right - Actions */}
           <div className="flex items-center space-x-4">
             <Button variant="ghost" size="sm" className="relative ">
+              <Link href="/cart">
+              
               <ShoppingCart className="h-5 w-5" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-white text-black text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItemsCount}
                 </span>
               )}
+              </Link>
             </Button>
             
             <Button variant="outline">
