@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,21 +9,37 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ModeToggle } from './theme-btn';
 
 const Navbar = () => {
-  const cartItemsCount = 2; 
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const cartItemsCount = 2;
   const categories = [""];
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(e);
+    }
+  };
+
   return (
-    <nav className=" bg-opacity-70 backdrop-blur  mb-9 top-0  sticky z-50 ">
+    <nav className="bg-opacity-70 backdrop-blur mb-9 top-0 sticky z-50">
       <div className="max-w-7xl mx-auto px-4">
         {/* Main Navbar */}
         <div className="flex items-center justify-between h-16">
           {/* Left - Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <ShoppingCart className="h-6 w-6 " />
+              <ShoppingCart className="h-6 w-6" />
               <span className="text-xl font-bold">Bazaaro</span>
             </Link>
           </div>
@@ -34,10 +51,14 @@ const Navbar = () => {
                 <Input
                   type="search"
                   placeholder="Search for products..."
-                  className="w-full pl-4 pr-10 h-10 rounded-l-md border-gray-700   focus:ring-1 focus:ring-gray-500"
+                  className="w-full pl-4 pr-10 h-10 rounded-l-md border-gray-700 focus:ring-1 focus:ring-gray-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
                 <Button 
                   className="rounded-l-none h-10"
+                  onClick={handleSearch}
                 >
                   <Search className="h-5 w-5" />
                 </Button>

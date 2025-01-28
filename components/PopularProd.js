@@ -2,8 +2,9 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
-const PopularProd = ({ image, title, price }) => {
+const PopularProd = ({ image, title, price, id }) => {
   return (
     <Card className="group h-[400px] w-full">
       
@@ -38,9 +39,17 @@ const PopularProd = ({ image, title, price }) => {
           </div>
           
           {/* Button */}
+          <div className="btndata flex mr-2 ml-2 pl-2 pr-2">
+
           <Button className="w-full  transition-colors duration-300" varient={"outline"}>
             Add to Cart
           </Button>
+         <Link href={`/products/${encodeURIComponent(id)}`}>
+
+          <Button>View Details</Button>
+         </Link>
+          </div>
+          
         </div>
       </CardContent>
     </Card>
