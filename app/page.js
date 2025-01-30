@@ -109,6 +109,7 @@ export default function Home() {
             image={product.image}
             price={product.price}
             id={product.id}
+            product={product}
           />
         ))}
       </div>

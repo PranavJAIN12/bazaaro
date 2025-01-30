@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ProviderWrapper from "@/redux/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,10 +23,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ProviderWrapper>
+
+        
         <ThemeProvider attribute="class"
             defaultTheme="system"
             enableSystem
@@ -37,6 +41,7 @@ export default function RootLayout({ children }) {
         {children}
         <Footer/>
         </ThemeProvider>
+        </ProviderWrapper>
       </body>
     </html>
   );

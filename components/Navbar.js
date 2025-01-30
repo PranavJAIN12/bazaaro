@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -11,12 +11,14 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ModeToggle } from './theme-btn';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+  const item = useSelector((state) => state.cart); // item is an array
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const cartItemsCount = 2;
-  const categories = [""];
+
+  const categories = ["Electronics", "Clothing", "Home", "Sports"]; // Example categories
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -68,18 +70,17 @@ const Navbar = () => {
 
           {/* Right - Actions */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative ">
-              <Link href="/cart">
-              
-              <ShoppingCart className="h-5 w-5" />
-              {cartItemsCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-white text-black text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemsCount}
-                </span>
-              )}
-              </Link>
-            </Button>
-            
+            <Link href="/cart" className="relative">
+              <Button variant="ghost" size="sm" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                {item.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-white text-black text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {item.length}
+                  </span>
+                )}
+              </Button>
+            </Link>
+
             <Button variant="outline">
               Login
             </Button>
@@ -112,13 +113,13 @@ const Navbar = () => {
                     <div className="space-y-4">
                       <h4 className="font-medium text-sm text-gray-400">Categories</h4>
                       {categories.map((category) => (
-                        <a
+                        <Link
                           key={category}
                           href={`/category/${category.toLowerCase()}`}
                           className="block py-2 text-sm hover:text-gray-300"
                         >
                           {category}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -131,13 +132,13 @@ const Navbar = () => {
         {/* Desktop Categories */}
         <div className="hidden md:flex items-center space-x-8 py-3">
           {categories.map((category) => (
-            <a
+            <Link
               key={category}
               href={`/category/${category.toLowerCase()}`}
               className="text-sm text-gray-400 hover:text-white transition-colors"
             >
               {category}
-            </a>
+            </Link>
           ))}
         </div>
       </div>
