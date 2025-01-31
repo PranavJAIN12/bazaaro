@@ -18,7 +18,7 @@ const Navbar = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ["Electronics", "Clothing", "Home", "Sports"]; // Example categories
+  const categories = ["Electronics", "Clothing", "Home", "Sports"]; 
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -110,7 +110,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Mobile Categories */}
-                    <div className="space-y-4">
+                    {/* <div className="space-y-4">
                       <h4 className="font-medium text-sm text-gray-400">Categories</h4>
                       {categories.map((category) => (
                         <Link
@@ -121,7 +121,7 @@ const Navbar = () => {
                           {category}
                         </Link>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -130,7 +130,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Categories */}
-        <div className="hidden md:flex items-center space-x-8 py-3">
+        {/* <div className="hidden md:flex items-center space-x-8 py-3">
           {categories.map((category) => (
             <Link
               key={category}
@@ -140,7 +140,7 @@ const Navbar = () => {
               {category}
             </Link>
           ))}
-        </div>
+        </div> */}
       </div>
     </nav>
   );
