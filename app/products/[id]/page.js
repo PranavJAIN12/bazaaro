@@ -1,17 +1,19 @@
 "use client";
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Star, Truck, Shield, RotateCcw, Heart } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { ArrowLeft, Star, Truck, Shield, RotateCcw, Heart } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { add } from "@/redux/CartSlice";
 
 const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedSize, setSelectedSize] = useState('M');
-  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("M");
   const params = useParams();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,16 +39,16 @@ const ProductDetails = () => {
     return [...Array(5)].map((_, index) => (
       <Star
         key={index}
-        className={`w-4 h-4 ${
+        className={`w-4 h-4 transition-all duration-200 ${
           index < Math.round(rating)
-            ? 'fill-yellow-400 text-yellow-400'
-            : 'fill-gray-200 text-gray-200'
+            ? "fill-yellow-400 text-yellow-400 scale-110"
+            : "fill-gray-200 text-gray-200"
         }`}
       />
     ));
   };
 
-  const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+  const sizes = ["XS", "S", "M", "L", "XL"];
 
   if (loading) {
     return (
@@ -64,13 +66,17 @@ const ProductDetails = () => {
     );
   }
 
+  const handleCartAdd = (product) => {
+    dispatch(add(product));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
         {/* Back Button */}
-        <button 
-          onClick={() => router.back()} 
-          className="flex items-center text-slate-600 hover:text-slate-800 mb-6"
+        <button
+          onClick={() => router.back()}
+          className="flex items-center text-slate-600 hover:text-slate-800 mb-6 transition-all duration-200"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Products
@@ -85,12 +91,15 @@ const ProductDetails = () => {
                   src={product.image}
                   alt={product.title}
                   fill
-                  className="object-contain p-4 transition-transform duration-300 group-hover:scale-110"
+                  className="object-contain p-4 grayscale group-hover:grayscale-0 transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="aspect-square relative bg-gray-50 rounded-lg overflow-hidden">
+                  <div
+                    key={i}
+                    className="aspect-square relative bg-gray-50 rounded-lg overflow-hidden"
+                  >
                     <Image
                       src={product.image}
                       alt={product.title}
@@ -105,12 +114,14 @@ const ProductDetails = () => {
             {/* Right Column - Product Info */}
             <div className="space-y-6">
               <div>
-                <p className="text-slate-500 uppercase tracking-wide text-sm">{product.category}</p>
-                <h1 className="text-3xl font-bold text-slate-900 mt-2">{product.title}</h1>
+                <p className="text-slate-500 uppercase tracking-wide text-sm">
+                  {product.category}
+                </p>
+                <h1 className="text-3xl font-bold text-slate-900 mt-2">
+                  {product.title}
+                </h1>
                 <div className="flex items-center mt-4">
-                  <div className="flex items-center">
-                    {renderStars(product.rating?.rate)}
-                  </div>
+                  <div className="flex items-center">{renderStars(product.rating?.rate)}</div>
                   <p className="ml-2 text-sm text-slate-500">
                     ({product.rating?.count} reviews)
                   </p>
@@ -124,16 +135,18 @@ const ProductDetails = () => {
 
               {/* Size Selector */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Select Size</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Select Size
+                </label>
                 <div className="flex gap-2">
                   {sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium ${
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                         selectedSize === size
-                          ? 'bg-slate-900 text-white'
-                          : 'bg-gray-50 text-slate-900 hover:bg-gray-100'
+                          ? "bg-slate-900 text-white"
+                          : "bg-gray-50 text-slate-900 hover:bg-gray-200 hover:scale-105"
                       }`}
                     >
                       {size}
@@ -142,32 +155,18 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              {/* Quantity Selector */}
-              {/* <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Quantity</label>
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-1 rounded-md bg-gray-50 hover:bg-gray-100"
-                  >
-                    -
-                  </button>
-                  <span className="w-12 text-center">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-1 rounded-md bg-gray-50 hover:bg-gray-100"
-                  >
-                    +
-                  </button>
-                </div>
-              </div> */}
-
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <Button className="flex-1 bg-slate-900 hover:bg-slate-800">
+                <Button
+                  className="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 transition-transform"
+                  onClick={() => handleCartAdd(product)}
+                >
                   Add to Cart
                 </Button>
-                <Button variant="outline" className="px-4">
+                <Button
+                  variant="outline"
+                  className="px-4 transition-all duration-200 hover:text-red-500 hover:border-red-500"
+                >
                   <Heart className="w-5 h-5" />
                 </Button>
               </div>
@@ -177,21 +176,27 @@ const ProductDetails = () => {
                 <div className="flex items-center gap-2">
                   <Truck className="w-5 h-5 text-slate-600" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900">Free Delivery</p>
+                    <p className="text-sm font-medium text-slate-900">
+                      Free Delivery
+                    </p>
                     <p className="text-sm text-slate-500">2-3 business days</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-slate-600" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900">2 Year Warranty</p>
+                    <p className="text-sm font-medium text-slate-900">
+                      2 Year Warranty
+                    </p>
                     <p className="text-sm text-slate-500">Full coverage</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <RotateCcw className="w-5 h-5 text-slate-600" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900">Free Returns</p>
+                    <p className="text-sm font-medium text-slate-900">
+                      Free Returns
+                    </p>
                     <p className="text-sm text-slate-500">Within 30 days</p>
                   </div>
                 </div>
@@ -199,7 +204,7 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 };
