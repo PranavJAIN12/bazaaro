@@ -7,6 +7,18 @@ import { ArrowLeft, Star, Truck, Shield, RotateCcw, Heart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { add } from "@/redux/CartSlice";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,16 +27,19 @@ const ProductDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
           `https://fakestoreapi.com/products/${params.id}`
         );
+        if (!response.ok) throw new Error("Failed to fetch product");
         const data = await response.json();
         setProduct(data);
-      } catch (error) {
-        console.error("Error fetching product:", error);
+      } catch (err) {
+        setError("Failed to load product");
       } finally {
         setLoading(false);
       }
@@ -88,8 +103,8 @@ const ProductDetails = () => {
             <div className="space-y-4">
               <div className="aspect-square relative bg-gray-50 rounded-lg overflow-hidden group">
                 <Image
-                  src={product.image}
-                  alt={product.title}
+                  src={product?.image}
+                  alt={product?.title}
                   fill
                   className="object-contain p-4 grayscale group-hover:grayscale-0 transition-transform duration-300 group-hover:scale-110"
                 />
@@ -101,8 +116,8 @@ const ProductDetails = () => {
                     className="aspect-square relative bg-gray-50 rounded-lg overflow-hidden"
                   >
                     <Image
-                      src={product.image}
-                      alt={product.title}
+                      src={product?.image}
+                      alt={product?.title}
                       fill
                       className="object-contain p-2"
                     />
@@ -115,13 +130,15 @@ const ProductDetails = () => {
             <div className="space-y-6">
               <div>
                 <p className="text-slate-500 uppercase tracking-wide text-sm">
-                  {product.category}
+                  {product?.category}
                 </p>
                 <h1 className="text-3xl font-bold text-slate-900 mt-2">
-                  {product.title}
+                  {product?.title}
                 </h1>
                 <div className="flex items-center mt-4">
-                  <div className="flex items-center">{renderStars(product.rating?.rate)}</div>
+                  <div className="flex items-center">
+                    {renderStars(product.rating?.rate ?? 0)}
+                  </div>
                   <p className="ml-2 text-sm text-slate-500">
                     ({product.rating?.count} reviews)
                   </p>
@@ -129,8 +146,12 @@ const ProductDetails = () => {
               </div>
 
               <div className="space-y-4">
-                <p className="text-4xl font-bold text-slate-900">${product.price}</p>
-                <p className="text-slate-600 leading-relaxed">{product.description}</p>
+                <p className="text-4xl font-bold text-slate-900">
+                  ${product?.price}
+                </p>
+                <p className="text-slate-600 leading-relaxed">
+                  {product?.description}
+                </p>
               </div>
 
               {/* Size Selector */}
@@ -157,12 +178,30 @@ const ProductDetails = () => {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <Button
-                  className="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 transition-transform"
-                  onClick={() => handleCartAdd(product)}
-                >
-                  Add to Cart
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button
+                      className="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 transition-transform"
+                      onClick={() => handleCartAdd(product)}
+                    >
+                      Add to Cart
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>A message for you</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You can customize the quantity of this product in the
+                        cart page.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      {/* <AlertDialogCancel>Cancel</AlertDialogCancel> */}
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
                 <Button
                   variant="outline"
                   className="px-4 transition-all duration-200 hover:text-red-500 hover:border-red-500"
@@ -204,7 +243,7 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   );
 };

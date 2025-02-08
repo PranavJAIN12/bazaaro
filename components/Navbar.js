@@ -13,10 +13,14 @@ import { useRouter } from 'next/navigation';
 import { ModeToggle } from './theme-btn';
 import { useSelector } from 'react-redux';
 
+
+
 const Navbar = () => {
   const item = useSelector((state) => state.cart); // item is an array
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  
+ 
 
   const categories = ["Electronics", "Clothing", "Home", "Sports"]; 
 
@@ -67,6 +71,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+          
 
           {/* Right - Actions */}
           <div className="flex items-center space-x-4">
@@ -81,12 +86,20 @@ const Navbar = () => {
               </Button>
             </Link>
 
+
+                <Link href={"/login"}>
+                
             <Button variant="outline">
               Login
             </Button>
+                </Link>
+
+                <Link href={"/signup"}>
+                
             <Button variant="outline">
               Signup
             </Button>
+                </Link>
             <ModeToggle/>
 
             {/* Mobile Menu */}

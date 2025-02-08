@@ -5,11 +5,14 @@ import PopularProd from "@/components/PopularProd";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+
+export default  function Home() {
   const [categories, setCategories] = useState([]);
   const [popularProd, setPopularProd] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(8);
+ 
+
 
   useEffect(() => {
     const fetchCategories = async () => {
