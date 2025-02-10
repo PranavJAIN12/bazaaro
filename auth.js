@@ -1,49 +1,36 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from 'next-auth/providers/credentials'
-
-import bcrypt from "bcryptjs"
-import { dbConnect } from "./lib/Mongodb";
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+// import { dbConnect } from "./lib/mongodb";
 import User from "./models/user";
+import { dbConnect } from "./lib/Mongodb";
 
+console.log("🔥 auth.js is executing...");
 
- 
-export const {  handlers: { GET, POST }, signIn, signOut, auth } = NextAuth({
-  session: {
-    strategy: 'jwt',
-  },
+export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET, // Ensure this is set in .env
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
-    },
-    async authorize(credentials){
-      if (credentials === null) return null;
+      credentials: { email: {}, password: {} },
+      async authorize(credentials) {
+        if (!credentials) return null;
 
-      try {
-        await dbConnect(); //from chatgpt
-        const user = await User.findOne({
-          email: credentials?.email
-        })
-        console.log(user);
-                    if (user) {
-                        const isMatch = await bcrypt.compare(
-                            credentials.password,
-                            user.password
-                        );
+        try {
+          await dbConnect();
+          const user = await User.findOne({ email: credentials.email });
+          if (!user) throw new Error("User not found");
 
-                        if (isMatch) {
-                            return user;
-                        } else {
-                            throw new Error("Email or Password is not correct");
-                        }
-                    } else {
-                        throw new Error("User not found");
-                    }
-      } catch (error) {
-        throw new Error(error);
-      }
-    }
-    })
+          const isMatch = await bcrypt.compare(credentials.password, user.password);
+          if (!isMatch) throw new Error("Invalid email or password");
+
+          return user;
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      },
+    }),
   ],
-})
+};
+
+export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(authOptions);

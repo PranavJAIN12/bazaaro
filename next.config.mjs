@@ -4,6 +4,7 @@ const nextConfig = {
     images: {
       domains: ["fakestoreapi.com"], // Add allowed external image domains here
     },
+    
 };
 
 export default nextConfig;
