@@ -31,6 +31,11 @@ export const authOptions = {
       },
     }),
   ],
+  // pages: {
+  //   signIn: "/login",  // 👈 Redirects to your custom login page
+  //   signOut: "/login",      // 👈 (Optional) Redirect users after logout
+  //   error: "/signup",   // 👈 Redirect errors to login page
+  // }
 };
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(authOptions);

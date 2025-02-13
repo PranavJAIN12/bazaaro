@@ -1,12 +1,10 @@
-
-import { ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
-
-import { SearchBar } from './searchBar';
-import { NavActions } from './navActions';
-import { MobileMenu } from './mobileMenu';
-import { auth, signOut } from '@/auth';
-import { Button } from './ui/button';
+import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { SearchBar } from "./searchBar";
+import { NavActions } from "./navActions";
+import { MobileMenu } from "./mobileMenu";
+import { auth, signOut } from "@/auth";
+import { Button } from "./ui/button";
 
 const Navbar = async () => {
   const session = await auth();
@@ -29,24 +27,34 @@ const Navbar = async () => {
 
           <NavActions user={user} />
           {user ? (
-        <form action={async () => { 'use server'; await signOut(); }}>
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline"> {user ? `Welcome, ${user.name || user.email}!` : "Hello, Guest!"}</span>
-            <Button variant="outline" type="submit">
-              Sign Out
-            </Button>
-          </div>
-        </form>
-      ) : (
-        <>
-          <Link href="/login">
-            <Button variant="outline">Login</Button>
-          </Link>
-          <Link href="/signup">
-            <Button variant="outline">Signup</Button>
-          </Link>
-        </>
-      )}
+            <form
+              action={async () => {
+                "use server";
+                await signOut();
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="hidden sm:inline">
+                  {" "}
+                  {user
+                    ? `Welcome, ${user.name || user.email}!`
+                    : "Hello, Guest!"}
+                </span>
+                <Button variant="outline" type="submit">
+                  Sign Out
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="outline">Login</Button>
+              </Link>
+              <Link href="/signup">
+                <Button variant="outline">Signup</Button>
+              </Link>
+            </>
+          )}
           <MobileMenu />
         </div>
       </div>
