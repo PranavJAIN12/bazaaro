@@ -10,6 +10,8 @@ const Navbar = async () => {
   const session = await auth();
   const user = session?.user;
 
+ 
+
   return (
     <nav className="bg-opacity-70 backdrop-blur mb-9 top-0 sticky z-50">
       <div className="max-w-7xl mx-auto px-4">
@@ -34,12 +36,13 @@ const Navbar = async () => {
               }}
             >
               <div className="flex items-center gap-2">
-                <span className="hidden sm:inline">
-                  {" "}
-                  {user
-                    ? `Welcome, ${user.name || user.email}!`
-                    : "Hello, Guest!"}
-                </span>
+              <Link href={`/profile/${user.id}`} passHref>
+  <span className="hidden sm:inline cursor-pointer">
+    {`Welcome, ${user.name || user.email}!`}
+  </span>
+</Link>
+
+
                 <Button variant="outline" type="submit">
                   Sign Out
                 </Button>
