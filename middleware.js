@@ -22,5 +22,5 @@ export async function middleware(request) {
 
 // Apply middleware to these routes
 export const config = {
-  matcher: ["/", "/profile", "/login", "/signup", "/verifyemail"],
+  matcher: ["/", "/profile", "/login", "/signup", "/verifyemail", "/success"],
 };

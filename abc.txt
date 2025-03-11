@@ -1,0 +1,4 @@
+password1234
+pranavJain
+
+mongodb+srv://<db_username>:<db_password>@bazaarodb.w8puy.mongodb.net/?retryWrites=true&w=majority&appName=bazaaroDb
