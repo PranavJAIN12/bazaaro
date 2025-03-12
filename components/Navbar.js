@@ -42,10 +42,11 @@ const Navbar = async () => {
   </span>
 </Link>
 
-
+              
                 <Button variant="outline" type="submit">
                   Sign Out
                 </Button>
+              
               </div>
             </form>
           ) : (

@@ -34,3 +34,14 @@ export async function POST(req) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export async function GET(req){
+  await dbConnect();
+  const session = await auth();
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  const user = await User.findOne({ user_id: session.user.id });
+  return new Response(JSON.stringify({ address: user?.address || null }), { status: 200 });
+}

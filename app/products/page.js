@@ -46,7 +46,7 @@ const Products = ({id}) => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 bg-slate-50">
+    <div className="max-w-7xl mx-auto px-4 py-8 ">
         {/* <button 
           onClick={() => router.back()} 
           className="flex items-center text-slate-600 hover:text-slate-800 mb-6"
@@ -55,10 +55,10 @@ const Products = ({id}) => {
           Back to Products
         </button> */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-slate-800 text-center capitalize">
+        <h1 className="text-3xl font-semibold  text-center capitalize">
           {category} Collection
         </h1>
-        <p className="text-slate-600 text-center mt-2">
+        <p className=" text-center mt-2">
           Discover our curated selection of {category} products
         </p>
       </div>
@@ -68,9 +68,9 @@ const Products = ({id}) => {
           products.map((product) => (
             <div 
               key={product.id} 
-              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
+              className=" rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col"
             >
-              <div className="p-4 flex items-center justify-center bg-white h-64">
+              <div className="p-4 flex items-center justify-center border-2 h-64">
                 <div className="relative w-48 h-48">
                   <Image
                     src={product.image}
@@ -83,25 +83,25 @@ const Products = ({id}) => {
                 </div>
               </div>
 
-              <div className="p-6 flex flex-col flex-grow bg-white">
-                <h2 className="font-semibold text-slate-800 text-lg mb-2 line-clamp-1">
+              <div className="p-6 flex flex-col flex-grow ">
+                <h2 className="font-semibold  text-lg mb-2 line-clamp-1">
                   {product.title}
                 </h2>
-                <p className="text-slate-600 text-sm mb-4 line-clamp-2">
+                <p className=" text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <p className="text-gray-700">
+                <p className="">
                 Rating: {product.rating?.rate} ({product.rating?.count} reviews)
               </p>
                 <div className="mt-auto">
-                  <p className="text-slate-800 text-xl font-semibold mb-4">
+                  <p className=" text-xl font-semibold mb-4">
                     ${product.price}
                   </p>
                   <Link 
                     href={`/products/${encodeURIComponent(product.id)}`} 
                     className="block"
                   >
-                    <Button className="w-full bg-slate-800 hover:bg-slate-700 text-white transition-colors">
+                    <Button className="w-full  hover:bg-slate-700  transition-colors">
                       View Details
                     </Button>
                   </Link>
